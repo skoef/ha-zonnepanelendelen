@@ -32,7 +32,7 @@ def setup_platform(
     # create sensors per project
     sensors = []
     for project in projects["projects_invested_in"]:
-        sensor = ZPDSensor(
+        sensor = ZPDProject(
             api=zpd_client, project_id=project["id"], project_name=project["name"]
         )
         sensor.api = zpd_client
@@ -42,8 +42,8 @@ def setup_platform(
     add_entities(sensors)
 
 
-class ZPDSensor(SensorEntity):
-    """Representation of a Sensor."""
+class ZPDProject(SensorEntity):
+    """Zonnepanelendelen project sensor"""
 
     api: API
     project_id: int
@@ -58,9 +58,7 @@ class ZPDSensor(SensorEntity):
         self._attr_name = "Zonnepanelendelen %s" % project_name
 
     def update(self) -> None:
-        """Fetch new state data for the sensor.
-        This is the only method that should fetch new data for Home Assistant.
-        """
+        """Fetch latest production data for this project"""
 
         data = self.api.project(self.project_id)
         self._attr_native_value = data["metrics"]["production_all"]["total_power_kWh"]
