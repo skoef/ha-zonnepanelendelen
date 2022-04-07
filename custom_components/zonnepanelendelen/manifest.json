@@ -1,0 +1,11 @@
+{
+    "domain": "zonnepanelendelen",
+    "name": "Zonnepanelendelen",
+    "documentation": "https://github.com/skoef/ha-zonnepanelendelen",
+    "issue_tracker": "https://github.com/skoef/ha-zonnepanelendelen/issues",
+    "dependencies": [],
+    "codeowners": ["@skoef"],
+    "requirements": [],
+    "iot_class": "cloud_polling",
+    "version": "0.1.0"
+  }
