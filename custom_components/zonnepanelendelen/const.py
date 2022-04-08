@@ -1,4 +1,8 @@
 """Constants for zonnepanelendelen."""
+from homeassistant.const import Platform
 
-CONST_PASSWORD = "password"
-CONST_USERNAME = "username"
+DOMAIN = "zonnepanelendelen"
+
+PLATFORMS = [Platform.SENSOR]
+
+PROJECTS_KEY = "projects_invested_in"

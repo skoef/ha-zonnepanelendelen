@@ -1,0 +1,20 @@
+{
+    "config": {
+      "abort": {
+        "no_projects": "No projects have been found on this account"
+      },
+      "error": {
+        "invalid_auth": "Authentication failed"
+      },
+      "step": {
+        "user": {
+          "data": {
+            "password": "Password",
+            "username": "Username"
+          },
+          "title": "Enter your Zonnepanelendelen credentials"
+        }
+      }
+    },
+    "title": "Zonnepanelendelen"
+  }

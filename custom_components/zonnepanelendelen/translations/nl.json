@@ -1,0 +1,20 @@
+{
+    "config": {
+      "abort": {
+        "no_projects": "Er zijn geen projecten gevonden onder deze account"
+      },
+      "error": {
+        "invalid_auth": "Inloggen mislukt"
+      },
+      "step": {
+        "user": {
+          "data": {
+            "password": "Wachtwoord",
+            "username": "Gebruikersnaam"
+          },
+          "title": "Voer je Zonnepanelendelen inloggegevens in"
+        }
+      }
+    },
+    "title": "Zonnepanelendelen"
+  }

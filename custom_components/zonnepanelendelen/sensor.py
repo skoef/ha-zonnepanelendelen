@@ -6,40 +6,51 @@ from homeassistant.components.sensor import (
     SensorEntity,
     SensorStateClass,
 )
-from homeassistant.const import ENERGY_KILO_WATT_HOUR
+from homeassistant.const import ENERGY_KILO_WATT_HOUR, CONF_USERNAME, CONF_PASSWORD
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
+from homeassistant.config_entries import ConfigEntry
 
 from .api import API
-from .const import CONST_PASSWORD, CONST_USERNAME
+from .const import PROJECTS_KEY
+from . import _LOGGER
 
 
-def setup_platform(
+async def async_setup_entry(
     hass: HomeAssistant,
-    config: ConfigType,
-    add_entities: AddEntitiesCallback,
-    discovery_info: DiscoveryInfoType | None = None,
+    config_entry: ConfigEntry,
+    async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up the sensor platform."""
 
+    _LOGGER.debug("async_setup_entry called")
+
+    config = config_entry.data
+
+    # check if component was configured properly
+    if CONF_USERNAME not in config or CONF_PASSWORD not in config:
+        _LOGGER.debug("compontent not configured")
+
+        return
+
     # login to API
-    zpd_client = API(config[CONST_USERNAME], config[CONST_PASSWORD])
-    zpd_client.login()
+    zpd_client = API(config[CONF_USERNAME], config[CONF_PASSWORD])
+    await hass.async_add_executor_job(zpd_client.login)
 
     # get list of projects invested in
-    projects = zpd_client.projects()
+    projects = await hass.async_add_executor_job(zpd_client.projects)
     # create sensors per project
     sensors = []
-    for project in projects["projects_invested_in"]:
+    for project in projects[PROJECTS_KEY]:
         sensor = ZPDProject(
             api=zpd_client, project_id=project["id"], project_name=project["name"]
         )
         sensor.api = zpd_client
         sensor.project_id = project["id"]
         sensors.append(sensor)
+        _LOGGER.debug("adding sensor for project %d", project["id"])
 
-    add_entities(sensors)
+    async_add_entities(sensors)
 
 
 class ZPDProject(SensorEntity):
@@ -59,8 +70,10 @@ class ZPDProject(SensorEntity):
         self._attr_name = f"Zonnepanelendelen {project_name}"
         self._attr_unique_id = f"zpd_project_{project_id}"
 
-    def update(self) -> None:
+    async def async_update(self) -> None:
         """Fetch latest production data for this project"""
 
-        data = self.api.project(self.project_id)
+        _LOGGER.debug("async_update called for project %d", self.project_id)
+
+        data = await self.hass.async_add_executor_job(self.api.project, self.project_id)
         self._attr_native_value = data["metrics"]["production_all"]["total_power_kWh"]
