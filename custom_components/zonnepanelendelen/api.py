@@ -7,12 +7,16 @@ ZPD_API_PREFIX = "/api/v1"
 ZPD_AUTH_HEADER = "Authorization"
 
 
+class AuthenticationError(Exception):
+    pass
+
+
 class API:
     """Zonnepanelendelen API client"""
 
-    auth_token = ""
-    username = ""
-    password = ""
+    auth_token: str
+    username: str
+    password: str
 
     def __init__(self, username, password):
         self.username = username
@@ -33,15 +37,16 @@ class API:
 
     def projects(self):
         """Get all projects from API"""
+
         self._check_login()
 
-        r = requests.get(
+        resp = requests.get(
             API._get_url("/projects/?view=index_only"), headers=self._get_headers()
         )
-        if r.status_code != 200:
-            raise Exception(r.text)
+        if resp.status_code != 200:
+            raise Exception(resp.text)
 
-        return json.loads(r.text)
+        return json.loads(resp.text)
 
     def project(self, project_id: int):
         """Get details of all specific project"""
@@ -66,7 +71,9 @@ class API:
         )
 
         if resp.status_code != 200:
-            raise Exception("login failed: (%d) %s" % (resp.status_code, resp.text))
+            raise AuthenticationError(
+                "login failed: (%d) %s" % (resp.status_code, resp.text)
+            )
 
         data = json.loads(resp.text)
         self.auth_token = data["token"]

@@ -4,19 +4,9 @@
 
 ## Installation and configuration
 
-- Copy the `custom_components/zonnepanelendelen` folder to your `custom_components` folder.
-- Add something similar to this in your `configuration.yaml`:
+Copy the `custom_components/zonnepanelendelen` folder to your `config/custom_components` folder and restart home assistant. You can now configure the integration.
 
-```yaml
-sensor:
-  - platform: zonnepanelendelen
-    # replace with your credentials
-    username: john@doe.com
-    password: s3cr3t
-```
-
-- Restart home assistant
-- You should be able to see a Zonnepanelendelen entity per project you invested in.
+[![Open your Home Assistant instance and start setting up a new integration.](https://my.home-assistant.io/badges/config_flow_start.svg)](https://my.home-assistant.io/redirect/config_flow_start/?domain=zonnepanelendelen)
 
 ## Known issues
 
