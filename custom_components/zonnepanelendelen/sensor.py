@@ -61,13 +61,13 @@ class ZPDProject(SensorEntity):
 
     _attr_native_unit_of_measurement = ENERGY_KILO_WATT_HOUR
     _attr_device_class = SensorDeviceClass.ENERGY
-    _attr_state_class = SensorStateClass.MEASUREMENT
+    _attr_state_class = SensorStateClass.TOTAL
     _attr_icon = "mdi:solar-panel-large"
 
     def __init__(self, api: API, project_id: int, project_name: str) -> None:
         self.api = api
         self.project_id = project_id
-        self._attr_name = f"Zonnepanelendelen {project_name}"
+        self._attr_name = f"{project_name}"
         self._attr_unique_id = f"zpd_project_{project_id}"
 
     async def async_update(self) -> None:
