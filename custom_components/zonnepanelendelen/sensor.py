@@ -60,6 +60,7 @@ class ZPDProject(SensorEntity):
     project_id: int
 
     _attr_native_unit_of_measurement = ENERGY_KILO_WATT_HOUR
+    _attr_native_value = 0
     _attr_device_class = SensorDeviceClass.ENERGY
     _attr_state_class = SensorStateClass.TOTAL
     _attr_icon = "mdi:solar-panel-large"

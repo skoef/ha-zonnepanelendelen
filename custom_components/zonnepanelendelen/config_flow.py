@@ -2,11 +2,10 @@
 
 from homeassistant import config_entries
 from homeassistant.const import CONF_PASSWORD, CONF_USERNAME
+import voluptuous as vol
 from .const import DOMAIN, PROJECTS_KEY
 from . import _LOGGER
 from .api import API, AuthenticationError
-
-import voluptuous as vol
 
 
 class ZPDConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
